@@ -8,55 +8,43 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- *
  * @author User
  */
 public class Gamer {
-    
+
     protected Map map;
     protected boolean fail = false;
     protected int shipCount;
-    
-    protected enum Title {
-        MAP_TITLE {
-            @Override
-            public String toString(){
-                return "Your map:";
-            }                
-        },
-        X_TITLE {
-            @Override
-            public String toString(){
-                return "x:";
-            }                
-        },
-        Y_TITLE {
-            @Override
-            public String toString(){
-                return "y:";
-            }                
-        },
-        WIN_TITLE {
-            @Override
-            public String toString(){
-                return "========YOU WIN!!!!!!!!!!!!!!!!!!!!!!!!!=============";
-            }                
-        }
-    }
-    
+
     public Gamer(Map map) {
         this.map = map; /*map of the enemy*/
         this.shipCount = this.map.getShipsCount();
     }
 
-    public String getEnemyMapTitle(){
+    public String getEnemyMapCaption() {
         return "Your enemy map:";
     }
 
     public String getTurnCaption() {
         return "Your turn:";
     }
-    
+
+    public String getXCaption() {
+        return "x:";
+    }
+
+    public String getYCaption() {
+        return "y:";
+    }
+
+    public String getWinCaption() {
+        return "========YOU WIN!!!!!!!!!!!!!!!!!!!!!!!!!=============";
+    }
+
+    public String getMapCaption() {
+        return "Your map:";
+    }
+
     protected int setCoordinate() {
         int coord = -1;
         boolean error = true;
@@ -67,12 +55,12 @@ public class Gamer {
                 coord = in.nextInt();
             } catch (InputMismatchException e) {
                 error = true;
-                System.out.println(Status.INDEX_OUT.toString()); 
+                System.out.println(Status.INDEX_OUT.toString());
             }
         }
         return coord;
     }
-    
+
     protected void printMap() {
         this.map.print(false);
     }
@@ -81,14 +69,14 @@ public class Gamer {
         int x, y;
         Status status;
         boolean continuing = true;
-        System.out.println(getEnemyMapTitle());
+        System.out.println(getEnemyMapCaption());
         this.printMap();
         System.out.println(getTurnCaption());
         do {
-            System.out.print(Title.X_TITLE);
+            System.out.print(getXCaption());
             x = setCoordinate();
-            System.out.print(Title.Y_TITLE);
-            y = setCoordinate();     
+            System.out.print(getYCaption());
+            y = setCoordinate();
             System.out.println();
             status = this.map.fire(x, y);
             switch (status) {
@@ -103,9 +91,9 @@ public class Gamer {
                     break;
                 case DIE:
                     System.out.println(Status.DIE.toString());
-                    this.shipCount --;
+                    this.shipCount--;
                     break;
-                default:       
+                default:
                     System.out.println(Status.MILK.toString());
                     continuing = false;
                     break;
@@ -113,7 +101,7 @@ public class Gamer {
         } while (status == Status.INDEX_OUT || status == Status.DOUBLE);
         return continuing;
     }
-    
+
     public boolean getFail() {
         if (this.shipCount == 0) {
             this.fail = true;

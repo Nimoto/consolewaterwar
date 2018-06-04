@@ -14,46 +14,39 @@ public class GamerBot extends Gamer{
     
     private Random r;
     
-    protected enum Title {
-        MAP_TITLE {
-            @Override
-            public String toString(){
-                return "Your enemy map:";
-            }                
-        },
-        X_TITLE {
-            @Override
-            public String toString(){
-                return "x:";
-            }                
-        },
-        Y_TITLE {
-            @Override
-            public String toString(){
-                return "y:";
-            }                
-        },
-        WIN_TITLE {
-            @Override
-            public String toString(){
-                return "You lose. Bye-bye, loser.";
-            }                
-        }
-    }
-    
     public GamerBot(Map map) {
         super(map);
         this.r = new Random();
     }
 
     @Override
-    public String getEnemyMapTitle() {
+    public String getEnemyMapCaption() {
         return "Your map:";
     }
 
     @Override
     public String getTurnCaption() {
         return "Enemy turn:";
+    }
+
+    @Override
+    public String getXCaption() {
+        return "x:";
+    }
+
+    @Override
+    public String getYCaption() {
+        return "y:";
+    }
+
+    @Override
+    public String getWinCaption() {
+        return "========YOU WIN!!!!!!!!!!!!!!!!!!!!!!!!!=============";
+    }
+
+    @Override
+    public String getMapCaption() {
+        return "Your map:";
     }
 
     @Override

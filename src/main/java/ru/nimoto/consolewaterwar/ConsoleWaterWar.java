@@ -5,65 +5,53 @@ package ru.nimoto.consolewaterwar;/*
  */
 
 /**
- *
  * @author User
  */
 public class ConsoleWaterWar {
 
-    /**
-     */
-    enum Params {
-        SIDE_SIZE(10),
-        SHIP_COUNT(10),
-        SHIP_MAX_CELL_COUNT(4);
-        
-        private int value;
-        
-        Params(int value) {
-            this.value = value;
-        }
-        
-        public int getValue() {
-            return this.value;
-        }
-    }
-    
-    private static Map generateBotMap() {
-        Ship[] ships = new Ship[Params.SHIP_COUNT.getValue()];
-        int i = 0, cellCount = Params.SHIP_MAX_CELL_COUNT.getValue(), count = 1;
+    public static int SIDE_SIZE = 10;
+    public static int SHIP_COUNT = 10;
+    public static int SHIP_MAX_CELL_COUNT = 4;
 
-        while (i < Params.SHIP_COUNT.getValue()) {
-            for (int j = 0; j < count; j ++) {
+    private static Map generateBotMap() {
+        Ship[] ships = new Ship[SHIP_COUNT];
+        int i = 0, cellCount = SHIP_MAX_CELL_COUNT, count = 1;
+
+        while (i < SHIP_COUNT) {
+            for (int j = 0; j < count; j++) {
                 ships[i] = new Ship(cellCount);
-                i ++;
+                i++;
             }
-            count ++;
-            cellCount --;
+            count++;
+            cellCount--;
         }
-        
-        Map map = new Map(Params.SIDE_SIZE.getValue(), ships);
-        map.generate();  
+
+        Map map = new Map(SIDE_SIZE, ships);
+        map.generate();
         return map;
     }
-    
+
     public static void main(String[] args) {
         Map userMap = generateBotMap();
-        System.out.println(Gamer.Title.MAP_TITLE);
-        userMap.print(true);
         Gamer user = new Gamer(userMap);
         GamerBot bot = new GamerBot(generateBotMap());
+        System.out.println(user.getMapCaption());
+        userMap.print(true);
         while (!user.getFail() && !bot.getFail()) {
-            while (user.step() && !user.getFail()){}
-            
+            while (user.step() && !user.getFail()) {
+            }
+
             if (!user.getFail()) {
-                while (bot.step() && !bot.getFail()){};
+                while (bot.step() && !bot.getFail()) {
+                }
+                ;
             }
         }
-        
+
         if (user.getFail()) {
-            System.out.println(Gamer.Title.WIN_TITLE);
+            System.out.println(user.getWinCaption());
         } else {
-            System.out.println(GamerBot.Title.WIN_TITLE);            
+            System.out.println(bot.getWinCaption());
         }
-    }    
+    }
 }
