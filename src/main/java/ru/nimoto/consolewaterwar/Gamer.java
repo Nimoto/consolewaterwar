@@ -4,6 +4,7 @@ package ru.nimoto.consolewaterwar;/*
  * and open the template in the editor.
  */
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -61,11 +62,11 @@ public class Gamer {
         return coord;
     }
 
-    protected void printMap() {
+    protected void printMap() throws IOException {
         this.map.print(false);
     }
 
-    public boolean step() {
+    public boolean step() throws IOException {
         int x, y;
         Status status;
         boolean continuing = true;
