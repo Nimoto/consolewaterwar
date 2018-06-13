@@ -4,20 +4,32 @@ package ru.nimoto.consolewaterwar;/*
  * and open the template in the editor.
  */
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * @author User
  */
 public class ConsoleWaterWar {
 
-    public static int SIDE_SIZE = 10;
-    public static int SHIP_COUNT = 10;
-    public static int SHIP_MAX_CELL_COUNT = 4;
+    public static Properties getConfig() throws IOException {
+        FileInputStream configFile = new FileInputStream("src/main/resources/config.properties");
+        Properties properties = new Properties();
+        properties.load(configFile);
+        return properties;
+    }
 
-    private static Map generateBotMap() {
-        Ship[] ships = new Ship[SHIP_COUNT];
-        int i = 0, cellCount = SHIP_MAX_CELL_COUNT, count = 1;
+    private static Map generateBotMap() throws IOException {
+        Properties properties = getConfig();
+        int shipCount = Integer.getInteger(properties.getProperty("main.SHIP_COUNT"));
+        int shipMaxCellCount = Integer.getInteger(properties.getProperty("main.SHIP_MAX_CELL_COUNT"));
+        int sideSize = Integer.getInteger(properties.getProperty("main.SIDE_SIZE"));
+        Ship[] ships = new Ship[shipCount];
+        int i = 0, cellCount = shipMaxCellCount, count = 1;
 
-        while (i < SHIP_COUNT) {
+        while (i < shipCount) {
             for (int j = 0; j < count; j++) {
                 ships[i] = new Ship(cellCount);
                 i++;
@@ -26,12 +38,12 @@ public class ConsoleWaterWar {
             cellCount--;
         }
 
-        Map map = new Map(SIDE_SIZE, ships);
+        Map map = new Map(sideSize, ships);
         map.generate();
         return map;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Map userMap = generateBotMap();
         Gamer user = new Gamer(userMap);
         GamerBot bot = new GamerBot(generateBotMap());
@@ -40,11 +52,9 @@ public class ConsoleWaterWar {
         while (!user.getFail() && !bot.getFail()) {
             while (user.step() && !user.getFail()) {
             }
-
             if (!user.getFail()) {
                 while (bot.step() && !bot.getFail()) {
                 }
-                ;
             }
         }
 

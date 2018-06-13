@@ -4,6 +4,9 @@ package ru.nimoto.consolewaterwar;/*
  * and open the template in the editor.
  */
 
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  *
  * @author User
@@ -15,24 +18,6 @@ public class Cell {
     private int x;
     private int y;
     private Ship ship;
-    
-    enum DrawParams {
-        SHIP_NOT_ACTIVE('#'),
-        SHIP_ACTIVE('X'),
-        NOT_SHIP_ACTIVE('O'),
-        NOT_SHIP_NOT_ACTIVE('*'),
-        IS_LOCK('L');
-        
-        private char symbol;
-        
-        DrawParams(char symbol) {
-            this.symbol = symbol;
-        }
-        
-        public char getSymbol() {
-            return this.symbol;
-        }
-    }
     
     Cell(int x, int y) {
         this.active = false;
@@ -78,15 +63,16 @@ public class Cell {
         return this.free;
     }
     
-    void print(boolean isUserMap) {
+    void print(boolean isUserMap) throws IOException {
+        Properties properties = ConsoleWaterWar.getConfig();
         if (this.isActive() && this.isFree()) {
-            System.out.print(DrawParams.NOT_SHIP_ACTIVE.getSymbol());
+            System.out.print(properties.getProperty("cell.NOT_SHIP_ACTIVE"));
         } else if (this.isActive() && !this.isFree()) {
-            System.out.print(DrawParams.SHIP_ACTIVE.getSymbol());            
+            System.out.print(properties.getProperty("cell.SHIP_ACTIVE"));
         } else if (!this.isActive() && !this.isFree() && isUserMap) {
-            System.out.print(DrawParams.SHIP_NOT_ACTIVE.getSymbol());            
+            System.out.print(properties.getProperty("cell.SHIP_NOT_ACTIVE"));
         } else { 
-            System.out.print(DrawParams.NOT_SHIP_NOT_ACTIVE.getSymbol());            
+            System.out.print(properties.getProperty("cell.NOT_SHIP_NOT_ACTIVE"));
         }
         System.out.print(' ');
     }

@@ -4,6 +4,7 @@ package ru.nimoto.consolewaterwar;/*
  * and open the template in the editor.
  */
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -95,7 +96,7 @@ public class Map {
         }
     }
 
-    public void print(Boolean isUserMap) {
+    public void print(Boolean isUserMap) throws IOException {
         for (int i = 0; i < this.sideSize; i++) {
             if (i == 0) {
                 System.out.print("  ");
